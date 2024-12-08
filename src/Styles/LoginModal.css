@@ -1,0 +1,34 @@
+.login-modal{
+    top: 10%;
+}
+
+.input-login{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    column-gap: 4%;
+    color: black;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
+.text-input{
+    font-size: 18px;
+    color: #043873;
+    font-weight: 600;
+}
+
+.input-password{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    column-gap: 4%;
+    color: black;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
