@@ -1,6 +1,6 @@
-import React from 'react';
-import { Layout, Image, Button, Flex, Progress, Tooltip } from 'antd';
-import { PlusOutlined, GiftOutlined, ContactsOutlined, ShopOutlined, WalletOutlined, ProfileOutlined, CalendarOutlined, CommentOutlined, TeamOutlined, BulbOutlined } from '@ant-design/icons';
+import React, { useEffect, useState} from 'react';
+import { Layout, Image, Button, Progress, Tooltip, Menu } from 'antd';
+import { PlusOutlined, GiftOutlined, ContactsOutlined, ShopOutlined, WalletOutlined, ProfileOutlined, CalendarOutlined, CommentOutlined, TeamOutlined, BulbOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 import Logo from '../pictures/Logo Icon.png';
@@ -9,19 +9,56 @@ import '../Styles/Layout.css';
 
 const { Header, Content, Footer } = Layout;
 
-const twoColors = {
-    '0%': '#108ee9',
-    '50%': '#ffffff',
-  };
+const eventOptions = [
+  { key: '1', label: 'Новый год 2025', date: '2024-12-31T20:00:00' },
+  { key: '2', label: 'Свадьба', date: '2024-12-20T15:00:00' },
+  { key: '3', label: 'Корпоратив', date: '2024-12-25T18:30:00' },
+];
 
 const Dashboard = ({ setIsAuth }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [selectedEvent, setSelectedEvent] = useState(eventOptions[0]);
+  const [current, setCurrent] = useState('1');
+  const [countdown, setCountdown] = useState(0); // начальное время в секундах
+
+  useEffect(() => {
+    // Устанавливаем начальное значение таймера
+    const calculateTimeLeft = () => {
+      const eventDate = new Date(selectedEvent.date).getTime();
+      const now = new Date().getTime();
+      return Math.max(0, Math.floor((eventDate - now) / 1000)); // Разница в секундах
+    };
+    setCountdown(calculateTimeLeft());
+
+    // Запускаем таймер
+    const timer = setInterval(() => {
+      setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [selectedEvent]);
+
+
+  const formatTime = (seconds) => {
+    const days = Math.floor(seconds / (24 * 3600));
+    const hours = Math.floor((seconds % (24 * 3600)) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    return `${days} дн. ${hours.toString().padStart(2, '0')} ч. ${minutes
+      .toString()
+      .padStart(2, '0')} м. ${secs.toString().padStart(2, '0')} с.`;
+  };
 
   const handleLogout = () => {
     setIsAuth(false); 
     navigate('/'); 
   };
 
+  const onClick = (e) => {
+    console.log('click ', e);
+    setCurrent(e.key);
+  };
 
   return (
     <Layout>
@@ -35,7 +72,6 @@ const Dashboard = ({ setIsAuth }) => {
         </div>
       </Header>
       <Content className="content">
-        {/* Блоки контента */}
         <div className="content-blok1">
           <div className="text-blok1">
             <div className="header-blok1">Давайте займемся организацией вашего мероприятия</div>
@@ -53,27 +89,27 @@ const Dashboard = ({ setIsAuth }) => {
                         <div className='column1-menu'>
                             <div className='tab-menu'>
                                 <GiftOutlined className='event-button'/>
-                                <div className='tab-menu-text'>Мероприятия</div>
+                                <div className='tab-menu-text' onClick={()=> navigate('/events')}>Мероприятия</div>
                             </div>
-                            <div className='tab-menu'>
+                            <div className='tab-menu' >
                                 <ContactsOutlined className='event-button'/>
-                                <div className='tab-menu-text'>Гости</div>
+                                <div className='tab-menu-text' onClick={()=> navigate('/gosts')}>Гости</div>
                             </div>
                         </div>
                         <div className='column1-menu'>
                             <div className='tab-menu'>
                                 <ShopOutlined className='event-button'/>
-                                <div className='tab-menu-text'>Подрядчики</div>
+                                <div className='tab-menu-text'  onClick={()=> navigate('/contractors')}>Подрядчики</div>
                             </div>
                             <div className='tab-menu'>
                                 <WalletOutlined className='event-button'/>
-                                <div className='tab-menu-text'>Бюджет</div>
+                                <div className='tab-menu-text' onClick={()=> navigate('/budget')}>Бюджет</div>
                             </div>
                         </div>
                         <div className='column1-menu'>
                             <div className='tab-menu'>
                                 <ProfileOutlined className='event-button'/>
-                                <div className='tab-menu-text'>Задачи</div>
+                                <div className='tab-menu-text' onClick={()=> navigate('/tasks')}>Задачи</div>
                             </div>
                             <div className='tab-menu'>
                                 <CalendarOutlined className='event-button-gray'/>
@@ -103,6 +139,11 @@ const Dashboard = ({ setIsAuth }) => {
                                 <div className='resume-event-header-text'>Мероприятия</div>
                         </div>
                         <div className="resume-underline-header"></div>
+                        <div className='resume-name-event'>{selectedEvent.label}</div>
+                        <div className='resume-date-event'>31.12.2024, Ваше мероприятие</div>
+                        <div className="countdown-timer">
+                          <div className="timer-display">{formatTime(countdown)}</div>
+                        </div>
                     </div>
                     <div className='resume-event'>
                         <div className='resume-event-header'>
@@ -162,28 +203,44 @@ const Dashboard = ({ setIsAuth }) => {
                         </div>
                     </div>
                     <div className='resume-event'>
-                        <div className='resume-event-header'>
-                                <WalletOutlined className='resume-event-header-button'/>
-                                <div className='resume-event-header-text'>Бюджет</div>
+                      <div className='resume-event-header'>
+                        <WalletOutlined className='resume-event-header-button' />
+                        <div className='resume-event-header-text'>Бюджет</div>
+                      </div>
+                      <div className="resume-underline-header"></div>
+                      <div className='tooltip-budget'>
+                        <div className='budget-row'>
+                          <div className='budget-item'>Бюджет</div>
+                          <div className='budget-value'> 
+                            <div className='tooltip-budget-icon1'/>
+                              30 000 рублей
+                            </div>
                         </div>
-                        <div className="resume-underline-header"></div>
-                        <div className='tooltip-budget'>
-                                <div className='text-tooltip-budget'> Бюджет
-                                    <div className='text-tooltip'>
-                                        <div className='tooltip-budget-icon1'/> 30 000 рублей
-                                    </div>
-                                </div>
-                                <div className='text-tooltip-budget'> Оплачено
-                                    <div className='text-tooltip'>
-                                        <div className='tooltip-budget-icon2'/> 1 000 рублей
-                                    </div>
-                                </div>
-                                <div className='text-tooltip-budget'> В ожидании
-                                    <div className='text-tooltip'>
-                                        <div className='tooltip-budget-icon1'/> 0 рублей
-                                    </div>
-                                </div>
+                        <div className='budget-row'>
+                          <div className='budget-item'>Оплачено</div>
+                          <div className='budget-value'> 
+                            <div className='tooltip-budget-icon2'/>
+                              1 000 рублей
+                            </div>
                         </div>
+                        <div className='budget-row'>
+                          <div className='budget-item'>В ожидании</div>
+                          <div className='budget-value'>
+                            <div className='tooltip-budget-icon3'/>
+                              0 рублей
+                            </div>
+                        </div>
+                      </div>
+                      <div className="resume-underline-header"></div>
+                      <div className='tooltip-budget'>
+                        <div className='budget-row'>
+                          <div className='budget-item-ost'>Остаток</div>
+                          <div className='budget-value-ost'>
+                            <div className='tooltip-budget-icon4'/>
+                              29 000 рублей
+                            </div>
+                        </div>
+                      </div>
                     </div>
               </div>
         </div>

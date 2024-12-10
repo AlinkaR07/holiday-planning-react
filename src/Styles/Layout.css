@@ -562,7 +562,7 @@
     flex-direction: row;
     align-items: center;
     margin-top: 1%;
-    margin-left: 3%;
+    margin-left: 6%;
 }
 
 .text-task-date{
@@ -644,14 +644,6 @@
     font-weight: 700;
 }
 
-.tooltip-budget{
-    display: flex;
-    flex-direction: column;
-    row-gap: 3%;
-    margin-left: 5.5%;
-    margin-bottom: 3%;
-}
-
 .tooltip-budget-icon1{
     width: 12px;
     height: 12px;
@@ -679,13 +671,13 @@
     margin-right: 3%;
 }
 
-.text-tooltip-budget{
-    display: flex;
-    flex-direction: row;
-    column-gap: 50%;
-    font-size: 22px;
-    align-items: center;
-    margin-top: 0.5%;
+.tooltip-budget-icon4{
+    width: 12px;
+    height: 12px;
+    background-color: #706d6ec1;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 3%;
 }
 
 .text-tooltip{
@@ -693,3 +685,100 @@
     font-weight: 600;
     width: 30%;
 }
+
+.tooltip-budget {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.2vh;
+    margin-left: 6%;
+    margin-bottom: 1%;
+  }
+  
+  .budget-row {
+    display: flex;
+    justify-content: row; /* Распределение элементов по сторонам */
+    align-items: center;
+  }
+  
+  .budget-item {
+    font-size: 22px;
+    text-align: left;
+    margin-top: 1%;
+    width: 50%;
+  }
+
+  .budget-item-ost{
+    font-size: 18px;
+    text-align: left;
+    margin-top: 1%;
+    color: #888888;
+    font-weight: 600;
+    width: 50%;
+  }
+  
+  .budget-value {
+    font-size: 18px;
+    text-align: left;
+    font-weight: 500;
+    margin-top: 1%;
+    width: 50%;
+  }
+
+  .budget-value-ost {
+    font-size: 18px;
+    text-align: left;
+    font-weight: 500;
+    color: #888888;
+    margin-top: 1%;
+    font-weight: 600;
+    width: 50%;
+  }
+
+  .event-dropdown {
+    margin: 20px 0;
+    border-color: #ffffff;
+    background-color: #ffffff;
+    border-radius: 0;
+    margin-left: 3%;
+  }
+  
+  /* .countdown-timer {
+    margin: 20px 0;
+    font-size: 18px;
+  } */
+  
+  .timer-display {
+    font-size: 24px;
+    font-weight: bold;
+    color: #108ee9;
+  }
+
+  .countdown-timer{
+    display: flex;
+    margin-left: 6%;
+    background: linear-gradient(to right, #FE9449, #EF5282);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 1%;
+    width: 88%;
+    justify-content: center;
+    margin-top: 2%;
+  }
+
+  .timer-display{
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .resume-name-event{
+    margin-left: 6%;
+    margin-top: 1%;
+    font-size: 22px;
+  }
+
+  .resume-date-event{
+    margin-left: 6%;
+    font-size: 16px;
+    color: #888888;
+  }
